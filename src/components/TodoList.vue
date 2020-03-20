@@ -10,7 +10,7 @@
                 appear
                 name="fade"
             >
-                <AddItem v-if="addToDo" @add="addItem" />
+                <AddItem v-if="addToDo" @add="addItem" @cancel="cancelItem" />
             </transition>
             <TodoItem v-for="(item, index) in items" :key="index" v-show="!item.complete" @close="removeItem(index)">{{item.text}}</TodoItem>
         </div>
@@ -42,6 +42,9 @@ export default {
                 text:text,
                 complete:false
             });
+            this.addToDo = false;
+        },
+        cancelItem: function(){
             this.addToDo = false;
         }
     },
