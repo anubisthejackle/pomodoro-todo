@@ -6,7 +6,8 @@
         <Clock :stage="stage" :timer="timer" :timerRunning="runTimer" @stageEnd="nextStage" />
         <TodoList />
         <div id="buttonsWrapper" class="flex justify-center pb-5">
-            <Button :runTimer="runTimer" @clicked="startTimer">Start Timer</Button>
+            <Button v-if="!runTimer" @clicked="startTimer">Start Timer</Button>
+            <Button v-if="runTimer" @clicked="pauseTimer">Pause Timer</Button>
         </div>
     </div>
 </template>
@@ -50,6 +51,9 @@ export default {
 
 
       },
+      pauseTimer: function() {
+          this.runTimer = false;
+      },
       nextStage: function() {
           this.runTimer = false;
 
@@ -83,6 +87,42 @@ export default {
 
 
       }
+  },
+  watch: {
+      stage: {
+          handler() {
+              localStorage.setItem('stage', JSON.stringify(this.stage));
+          }
+      },
+      pomodoros: {
+          handler() {
+              localStorage.setItem('pomodoros', JSON.stringify(this.pomodoros));
+          }
+      },
+      // timer: {
+      //     handler() {
+      //         localStorage.setItem('timer', JSON.stringify(this.timer));
+      //     }
+      // },
+      // runTimer: {
+      //     handler() {
+      //         localStorage.setItem('runTimer', JSON.stringify(this.runTimer));
+      //     }
+      // },
+  },
+  mounted() {
+      if(localStorage.getItem('stage')){
+          this.stage = JSON.parse(localStorage.getItem('stage'));
+      }
+      if(localStorage.getItem('pomodoros')){
+          this.pomodoros = JSON.parse(localStorage.getItem('pomodoros'));
+      }
+      // if(localStorage.getItem('timer')){
+      //     this.timer = JSON.parse(localStorage.getItem('timer'));
+      // }
+      // if(localStorage.getItem('runTimer')){
+      //     this.runTimer = JSON.parse(localStorage.getItem('runTimer'));
+      // }
   }
 }
 </script>

@@ -48,11 +48,15 @@ export default {
             if(this.seconds == 0){
                 this.minutes--;
                 this.seconds = 59;
+                localStorage.setItem('minutes', this.minutes);
+                localStorage.setItem('seconds', this.seconds);
                 setTimeout(() => this.runTimer(), 1000);
                 return;
             }
 
             this.seconds--;
+            localStorage.setItem('minutes', this.minutes);
+            localStorage.setItem('seconds', this.seconds);
             setTimeout(() => this.runTimer(), 1000);
 
         }
@@ -65,19 +69,28 @@ export default {
         }
     },
     watch: {
-        stage: function() {
-
-        },
         timer: function() {
             this.minutes = this.timer;
             this.seconds = 0;
+
+            localStorage.setItem('minutes', this.minutes);
+            localStorage.setItem('seconds', this.seconds);
 
             if(!this.timerRunning){
                 setTimeout(() => this.runTimer(), 1000);
             }
         },
         timerRunning: function() {
+            localStorage.setItem('timerRunning', this.timerRunning);
             setTimeout(() => this.runTimer(), 1000);
+        }
+    },
+    mounted() {
+        if(localStorage.getItem('minutes')){
+            this.minutes = localStorage.getItem('minutes');
+        }
+        if(localStorage.getItem('seconds')){
+            this.seconds = localStorage.getItem('seconds');
         }
     }
 

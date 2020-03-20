@@ -44,6 +44,19 @@ export default {
             });
             this.addToDo = false;
         }
+    },
+    watch: {
+        items: {
+            handler() {
+                localStorage.setItem('todos', JSON.stringify(this.items));
+            },
+            deep: true,
+        }
+    },
+    mounted() {
+        if(localStorage.getItem('todos')){
+            this.items = JSON.parse(localStorage.getItem('todos'));
+        }
     }
 
 }
