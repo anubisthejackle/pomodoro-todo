@@ -1,7 +1,7 @@
 <template>
     <div class="clock text-center">
         <div class="clockFace">
-            00:00
+            {{clockFace}}
         </div>
         <div class="description pb-5 text-xl font-semibold leading-tight">
             <span v-if="stage == 1">
@@ -25,7 +25,61 @@
 
 <script>
 export default {
-    props: ['stage']
+    props: ['stage','timer', 'timerRunning'],
+    data() {
+        return {
+            minutes: 0,
+            seconds: 0,
+        };
+    },
+    methods: {
+        runTimer: function() {
+            if(!this.timerRunning){
+                return;
+            }
+
+            if(this.seconds == 0 && this.minutes == 0){
+                // Timer is over.
+                this.$emit('stageEnd');
+                this.timerRunning = false;
+                return;
+            }
+
+            if(this.seconds == 0){
+                this.minutes--;
+                this.seconds = 59;
+                setTimeout(() => this.runTimer(), 1000);
+                return;
+            }
+
+            this.seconds--;
+            setTimeout(() => this.runTimer(), 1000);
+
+        }
+    },
+    computed: {
+        clockFace: function(){
+            let minutes = ("00"+this.minutes).slice(-2);
+            let seconds = ("00"+this.seconds).slice(-2);
+            return minutes + ":" + seconds;
+        }
+    },
+    watch: {
+        stage: function() {
+
+        },
+        timer: function() {
+            this.minutes = this.timer;
+            this.seconds = 0;
+
+            if(!this.timerRunning){
+                setTimeout(() => this.runTimer(), 1000);
+            }
+        },
+        timerRunning: function() {
+            setTimeout(() => this.runTimer(), 1000);
+        }
+    }
 
 }
 </script>

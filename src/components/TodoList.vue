@@ -1,5 +1,5 @@
 <template>
-    <div id="todoList" class="scrollable overflow-y-scroll">
+    <div id="todoList" class="scrollable overflow-y-auto">
         <div class="flex justify-center">
             <div @click="addToDo = !addToDo" id="addButton" class="border w-5/12 shadow-lg mt-4 mb-4 h-full text-center rounded-full cursor-pointer">
                 <span class="text-2xl">Add To-Do</span>
